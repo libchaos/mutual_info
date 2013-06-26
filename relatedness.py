@@ -25,24 +25,63 @@ def calc_mutual_info(n11, n01, n10, n00):
 
 	return mi
 
-def get_mutual_info_inputs(class_freq, class_term_freq):
+def get_mutual_info_inputs(class_freq, term_class_freq):
 	'''Convert arrays of class frequencies and class-term frequencies to counts 
 	used in the calculation of mutual info
 
 	Args: 
 		class_freq (ndarray):
 			class_freq[i] = # of documents in the ith class
-		class_term_freq (ndarray):
-			class_term_freq[i,j] = # of documents in the ith class where the jth term appears
+		term_class_freq (ndarray):
+			term_class_freq[i,j] = # of documents in the ith class where the jth term appears
 	
 	Return:
 		see calc_mutual_info except that inputs to calc_mutual_info are integers and 
 		here they are arrays 
 	'''
 
-	n11 = class_term_freq[:,1]
+	n11 = term_class_freq[:,1]
 	n01 = class_freq[1] - n11
-	n10 = class_term_freq[:,0]
+	n10 = term_class_freq[:,0]
 	n00 = class_freq[0] - n10
 	
-	return n11, n01, n10, n00 		
+	return n11, n01, n10, n00
+
+def get_freq_from_df(class_freq_df, term_class_freq_df):
+	'''Convert data frames of class frequencies and class-term frequencies 
+	to arrays of those values
+
+	Args:
+		class_freq_df (pd.DataFrame):
+			see README (example_class_freq.txt)
+		term_class_freq_df (pd.DataFrame):
+			see README (example_term_class_freq.txt)
+
+	Return:
+		class_freq (ndarray): see get_mutual_info_inputs
+		term_class_freq (ndarray): see get_mutual_info_inputs
+	'''
+	
+	class_freq = class_freq_df.n.values
+
+	termids = np.unique(term_class_freq_df.termid.values)
+
+	termid_index = {}
+	for i, termid in enumerate(termids):
+		termid_index[termid] = i
+
+	term_class_freq = np.zeros((len(termids), 2))
+	for i in range(len(term_class_freq_df)):
+		termid = term_class_freq_df['termid'][i]
+		classid = term_class_freq_df['classid'][i]
+		n = term_class_freq_df['n'][i]
+
+		term_class_freq[termid_index[termid], classid] = n
+
+	return class_freq, term_class_freq
+
+
+
+
+
+ 		

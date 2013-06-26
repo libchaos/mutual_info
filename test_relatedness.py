@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import scipy.sparse as sp
 
 import relatedness as r
 r = reload(r)
@@ -37,3 +36,20 @@ def test_get_mutual_info_inputs():
 	assert (n00 == np.array([774106])).all()
 
 	return n11, n01, n10, n00
+
+def test_get_freq_from_df():
+
+	class_freq_df = pd.DataFrame({'classid': [0, 1], 'n': [801758, 190]})
+	term_class_freq_df = pd.DataFrame({'termid': ['export','export'], 'classid': [0, 1], 'n': [27652, 49]})
+
+	class_freq, term_class_freq = r.get_freq_from_df(class_freq_df, term_class_freq_df)
+
+	soln_class_freq = np.array([801758, 190])
+	soln_term_class_freq = np.zeros((1,2))
+	soln_term_class_freq[0,0] = 27652
+	soln_term_class_freq[0,1] = 49
+
+	assert (class_freq == soln_class_freq).all()
+	assert (term_class_freq == soln_term_class_freq).all()
+
+	return vars()
