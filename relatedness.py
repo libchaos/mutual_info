@@ -80,7 +80,18 @@ def get_freq_from_df(class_freq_df, term_class_freq_df):
 
 	return class_freq, term_class_freq
 
+def calc_mutual_info_df(class_freq_df, term_class_freq_df):
+	'''Calculate mutual info from data frames of class and term-class frequencies
+	'''
 
+	class_freq, term_class_freq = get_freq_from_df(class_freq_df, term_class_freq_df)
+	n11, n01, n10, n00 = get_mutual_info_inputs(class_freq, term_class_freq)
+
+	mi = np.zeros(len(n11))
+	for i in range(len(n11)):
+		mi[i] = calc_mutual_info(n11[i], n01[i], n10[i], n00[i])
+
+	return mi
 
 
 

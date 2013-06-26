@@ -53,3 +53,16 @@ def test_get_freq_from_df():
 	assert (term_class_freq == soln_term_class_freq).all()
 
 	return vars()
+
+def test_calc_mutual_info_df():
+
+	class_freq_df = pd.DataFrame({'classid': [0, 1], 'n': [801758, 190]})
+	term_class_freq_df = pd.DataFrame({'termid': ['export','export'], 'classid': [0, 1], 'n': [27652, 49]})
+
+	mi = r.calc_mutual_info_df(class_freq_df, term_class_freq_df)
+	soln_mi = np.array([.0001105])
+
+	assert len(mi) == len(soln_mi)
+	assert approx_equal(mi[0], soln_mi[0])
+
+	return mi, soln_mi	
