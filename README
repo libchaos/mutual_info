@@ -6,9 +6,23 @@ and each class giving the degree of relatedness between the term and the class.
 
 To calculate the relatedness scores for the example dataset:
 
-python relatedness.py < example_input.txt > example_output.txt
+python relatedness.py example_classes.txt < example_input.txt > example_output.txt
 
-The input file, in this case example_input.txt, is a tab-delimited text file with a row for each combination of a term and
+The first input file, in this case example_classes.txt, is a tab-delimited file with a row for each class
+and the following columns:
+
+classid: id or distinct name of the class
+n: # of documents in the class associated with classid
+
+For example:
+
+classid	n
+0	100
+1	50
+2 10
+3	20
+
+The second input file, in this case example_input.txt, is a tab-delimited text file with a row for each combination of a term and
 a class and the following columns:
 
 termid: id or distinct name of the term
