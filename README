@@ -1,0 +1,42 @@
+relatedness
+===========
+
+Given observations of entities from multiple classes, assign scores to each entity and each class
+giving the degree of relatedness between the entity and the class.
+
+To calculate the relatedness score for the example dataset:
+
+python relatedness.py < example_input.txt > example_output.txt
+
+The input file, in this case example_input.txt, is a tab-delimited text file with a row for each combination of an entity and
+a class with some number of observations and the following columns:
+
+ENTITYID: id or distinct name of the entity
+CLASSID: id or distinct name of the class
+N: # of obs of the entity associated with the ENTITYID in the class associated with the CLASSID
+
+For example:
+
+ENTITYID	CLASSID	N
+0	0	10
+1	0	5
+1 1	30
+2	1	100
+
+If a certain combination is not included, then it is assumed that there are no observations of that combination. 
+
+The output file, in this case example_output.txt, is a tab-delimited text with a row for each combination of an entity and
+a class with some number of observations and the following columns:
+
+ENTITYID: id or distinct name of the entity
+CLASSID: id or distinct name of the class
+R: relatedness score, the higher the score the more related the entity is to the class
+
+For example:
+
+ENTITYID	CLASSID	R
+0	0	.8
+1	0	.1
+1 1	.7
+2	1	.9
+
