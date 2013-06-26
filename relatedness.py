@@ -24,4 +24,25 @@ def calc_mutual_info(n11, n01, n10, n00):
 	mi += (n00/n)*np.log2((n*n00)/(n0x*nx0))
 
 	return mi
-		
+
+def get_mutual_info_inputs(class_freq, class_term_freq):
+	'''Convert arrays of class frequencies and class-term frequencies to counts 
+	used in the calculation of mutual info
+
+	Args: 
+		class_freq (ndarray):
+			class_freq[i] = # of documents in the ith class
+		class_term_freq (ndarray):
+			class_term_freq[i,j] = # of documents in the ith class where the jth term appears
+	
+	Return:
+		see calc_mutual_info except that inputs to calc_mutual_info are integers and 
+		here they are arrays 
+	'''
+
+	n11 = class_term_freq[:,1]
+	n01 = class_freq[1] - n11
+	n10 = class_term_freq[:,0]
+	n00 = class_freq[0] - n10
+	
+	return n11, n01, n10, n00 		
