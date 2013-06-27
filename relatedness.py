@@ -158,7 +158,7 @@ def calc_relatedness(class_freq_filename, term_class_freq_filename):
 			classids.append(classid)
 			mis.append(mi[termid_index[termid], classid_index[classid]])	
 	
-	relatedness = pd.DataFrame({'termid': termids, 'classid': classids, 'r': mis}).sort('r', ascending=0)
+	relatedness = pd.DataFrame({'termid': termids, 'classid': classids, 'r': mis}).sort(['classid','r'], ascending=[1,0])
 
 	return relatedness
 
