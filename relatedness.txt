@@ -1,2 +1,3 @@
-classid	r
-1	0.000110535586101
+classid	r	termid
+1	0.000110535586101	export
+0	0.000110535586101	export

@@ -30,10 +30,10 @@ def test_get_mutual_info_inputs():
 
 	n11, n01, n10, n00 = r.get_mutual_info_inputs(class_freq, term_class_freq)
 
-	assert (n11 == np.array([49])).all()
-	assert (n01 == np.array([141])).all()
-	assert (n10 == np.array([27652])).all()
-	assert (n00 == np.array([774106])).all()
+	assert (n11 == np.array([[27652, 49]])).all()
+	assert (n01 == np.array([[774106, 141]])).all()
+	assert (n10 == np.array([[49, 27652]])).all()
+	assert (n00 == np.array([[141, 774106]])).all()
 
 	return n11, n01, n10, n00
 
@@ -60,9 +60,10 @@ def test_calc_mutual_info_df():
 	term_class_freq_df = pd.DataFrame({'termid': ['export','export'], 'classid': [0, 1], 'n': [27652, 49]})
 
 	mi = r.calc_mutual_info_df(class_freq_df, term_class_freq_df)
-	soln_mi = np.array([.0001105])
+	soln_mi = np.array([[.0001105, .0001105]])
 
-	assert len(mi) == len(soln_mi)
-	assert approx_equal(mi[0], soln_mi[0])
+	assert mi.shape == soln_mi.shape
+	assert approx_equal(mi[0,0], soln_mi[0,0])
+	assert approx_equal(mi[0,1], soln_mi[0,1])
 
 	return mi, soln_mi	

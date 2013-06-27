@@ -42,13 +42,39 @@ def get_mutual_info_inputs(class_freq, term_class_freq):
 		see calc_mutual_info except that inputs to calc_mutual_info are integers and 
 		here they are arrays 
 	'''
+	
+	n_terms, n_classes = term_class_freq.shape
 
-	n11 = term_class_freq[:,1]
-	n01 = class_freq[1] - n11
-	n10 = term_class_freq[:,0]
-	n00 = class_freq[0] - n10
+	n11 = np.zeros((n_terms, n_classes))
+	n01 = np.zeros((n_terms, n_classes))
+	for i in range(n_terms):
+		for j in range(n_classes):
+			n11[i,j] = term_class_freq[i,j]
+			n01[i,j] = class_freq[j] - n11[i,j]
+ 
+	n10 = np.zeros((n_terms, n_classes))
+	n00 = np.zeros((n_terms, n_classes))
+	for i in range(n_terms):
+		for j in range(n_classes):
+			n10[i,j] = np.sum(n11[i,:]) - n11[i,j]
+			n00[i,j] = np.sum(n01[i,:]) - n01[i,j] 	
 	
 	return n11, n01, n10, n00
+
+def get_term_class_index(class_freq_df, term_class_freq_df):
+
+	termids = np.unique(term_class_freq_df.termid.values)
+	classids = np.unique(term_class_freq_df.classid.values)
+
+	termid_index = {}
+	for i, termid in enumerate(termids):
+		termid_index[termid] = i
+
+	classid_index = {}
+	for i, classid in enumerate(classids):
+		classid_index[classid] = i
+
+	return termid_index, classid_index
 
 def get_freq_from_df(class_freq_df, term_class_freq_df):
 	'''Convert data frames of class frequencies and class-term frequencies 
@@ -64,22 +90,18 @@ def get_freq_from_df(class_freq_df, term_class_freq_df):
 		class_freq (ndarray): see get_mutual_info_inputs
 		term_class_freq (ndarray): see get_mutual_info_inputs
 	'''
+
+	termid_index, classid_index = get_term_class_index(class_freq_df, term_class_freq_df)
 	
 	class_freq = class_freq_df.n.values
 
-	termids = np.unique(term_class_freq_df.termid.values)
-
-	termid_index = {}
-	for i, termid in enumerate(termids):
-		termid_index[termid] = i
-
-	term_class_freq = np.zeros((len(termids), 2))
+	term_class_freq = np.zeros((len(termid_index), 2))
 	for i in range(len(term_class_freq_df)):
 		termid = term_class_freq_df['termid'][i]
 		classid = term_class_freq_df['classid'][i]
 		n = term_class_freq_df['n'][i]
 
-		term_class_freq[termid_index[termid], classid] = n
+		term_class_freq[termid_index[termid], classid_index[classid]] = n
 
 	return class_freq, term_class_freq
 
@@ -90,9 +112,12 @@ def calc_mutual_info_df(class_freq_df, term_class_freq_df):
 	class_freq, term_class_freq = get_freq_from_df(class_freq_df, term_class_freq_df)
 	n11, n01, n10, n00 = get_mutual_info_inputs(class_freq, term_class_freq)
 
-	mi = np.zeros(len(n11))
-	for i in range(len(n11)):
-		mi[i] = calc_mutual_info(n11[i], n01[i], n10[i], n00[i])
+	n_terms, n_classes = n11.shape
+
+	mi = np.zeros((n_terms, n_classes))
+	for i in range(n_terms):
+		for j in range(n_classes):
+			mi[i,j] = calc_mutual_info(n11[i,j], n01[i,j], n10[i,j], n00[i,j])
 
 	return mi
 
@@ -101,10 +126,19 @@ def calc_relatedness(class_freq_filename, term_class_freq_filename):
 	class_freq_df = pd.read_csv(class_freq_filename, sep='\t')	
 	term_class_freq_df = pd.read_csv(term_class_freq_filename, sep='\t')
 
-	mi = calc_mutual_info_df(class_freq_df, term_class_freq_df).tolist()
-	classids = class_freq_df.classid.values.tolist()
+	termid_index, classid_index = get_term_class_index(class_freq_df, term_class_freq_df)
+	mi = calc_mutual_info_df(class_freq_df, term_class_freq_df)
 
-	relatedness = pd.DataFrame({'classid': classids[1], 'r': mi}).sort('r', ascending=0)
+	mis = []
+	termids = []
+	classids = []	
+	for termid in termid_index.keys():
+		for classid in classid_index.keys():
+			termids.append(termid)
+			classids.append(classid)
+			mis.append(mi[termid_index[termid], classid_index[classid]])	
+	
+	relatedness = pd.DataFrame({'termid': termids, 'classid': classids, 'r': mis}).sort('r', ascending=0)
 
 	return relatedness
 
