@@ -42,7 +42,8 @@ def test_get_freq_from_df():
 	class_freq_df = pd.DataFrame({'classid': [0, 1], 'n': [801758, 190]})
 	term_class_freq_df = pd.DataFrame({'termid': ['export','export'], 'classid': [0, 1], 'n': [27652, 49]})
 
-	class_freq, term_class_freq = r.get_freq_from_df(class_freq_df, term_class_freq_df)
+	termid_index, classid_index = r.get_term_class_index(class_freq_df, term_class_freq_df)
+	class_freq, term_class_freq = r.get_freq_from_df(class_freq_df, term_class_freq_df, termid_index, classid_index)
 
 	soln_class_freq = np.array([801758, 190])
 	soln_term_class_freq = np.zeros((1,2))
@@ -59,7 +60,8 @@ def test_calc_mutual_info_df():
 	class_freq_df = pd.DataFrame({'classid': [0, 1], 'n': [801758, 190]})
 	term_class_freq_df = pd.DataFrame({'termid': ['export','export'], 'classid': [0, 1], 'n': [27652, 49]})
 
-	mi = r.calc_mutual_info_df(class_freq_df, term_class_freq_df)
+	termid_index, classid_index = r.get_term_class_index(class_freq_df, term_class_freq_df)
+	mi = r.calc_mutual_info_df(class_freq_df, term_class_freq_df, termid_index, classid_index)
 	soln_mi = np.array([[.0001105, .0001105]])
 
 	assert mi.shape == soln_mi.shape

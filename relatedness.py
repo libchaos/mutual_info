@@ -76,7 +76,7 @@ def get_term_class_index(class_freq_df, term_class_freq_df):
 
 	return termid_index, classid_index
 
-def get_freq_from_df(class_freq_df, term_class_freq_df):
+def get_freq_from_df(class_freq_df, term_class_freq_df, termid_index, classid_index):
 	'''Convert data frames of class frequencies and class-term frequencies 
 	to arrays of those values
 
@@ -85,17 +85,19 @@ def get_freq_from_df(class_freq_df, term_class_freq_df):
 			see README (example_class_freq.txt)
 		term_class_freq_df (pd.DataFrame):
 			see README (example_term_class_freq.txt)
+		termid_index (dict):
+			each key is a termid and each value gives the index associated with that termid in the returned arrays
+		classid_index (dict):
+			each key is a classid and each value gives the index associated with that classid in the returned arrays
 
 	Return:
 		class_freq (ndarray): see get_mutual_info_inputs
 		term_class_freq (ndarray): see get_mutual_info_inputs
 	'''
-
-	termid_index, classid_index = get_term_class_index(class_freq_df, term_class_freq_df)
 	
 	class_freq = class_freq_df.n.values
 
-	term_class_freq = np.zeros((len(termid_index), 2))
+	term_class_freq = np.zeros((len(termid_index), len(classid_index)))
 	for i in range(len(term_class_freq_df)):
 		termid = term_class_freq_df['termid'][i]
 		classid = term_class_freq_df['classid'][i]
@@ -105,11 +107,11 @@ def get_freq_from_df(class_freq_df, term_class_freq_df):
 
 	return class_freq, term_class_freq
 
-def calc_mutual_info_df(class_freq_df, term_class_freq_df):
+def calc_mutual_info_df(class_freq_df, term_class_freq_df, termid_index, classid_index):
 	'''Calculate mutual info from data frames of class and term-class frequencies
 	'''
 
-	class_freq, term_class_freq = get_freq_from_df(class_freq_df, term_class_freq_df)
+	class_freq, term_class_freq = get_freq_from_df(class_freq_df, term_class_freq_df, termid_index, classid_index)
 	n11, n01, n10, n00 = get_mutual_info_inputs(class_freq, term_class_freq)
 
 	n_terms, n_classes = n11.shape
@@ -127,7 +129,7 @@ def calc_relatedness(class_freq_filename, term_class_freq_filename):
 	term_class_freq_df = pd.read_csv(term_class_freq_filename, sep='\t')
 
 	termid_index, classid_index = get_term_class_index(class_freq_df, term_class_freq_df)
-	mi = calc_mutual_info_df(class_freq_df, term_class_freq_df)
+	mi = calc_mutual_info_df(class_freq_df, term_class_freq_df, termid_index, classid_index)
 
 	mis = []
 	termids = []
