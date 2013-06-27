@@ -40,7 +40,7 @@ def get_mutual_info_inputs(class_freq, term_class_freq):
 	
 	Return:
 		see calc_mutual_info except that inputs to calc_mutual_info are integers and 
-		here they are arrays 
+		here they are arrays. for instance n11[i,j] = # of documents in the jth class where the ith term appears  
 	'''
 	
 	n_terms, n_classes = term_class_freq.shape
