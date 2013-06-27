@@ -1,4 +1,7 @@
 import numpy as np
+import pandas as pd
+import optparse
+import pdb
 
 def calc_mutual_info(n11, n01, n10, n00):
 	'''Calculate the mutual information
@@ -93,6 +96,32 @@ def calc_mutual_info_df(class_freq_df, term_class_freq_df):
 
 	return mi
 
+def calc_relatedness(class_freq_filename, term_class_freq_filename):
 
+	class_freq_df = pd.read_csv(class_freq_filename, sep='\t')	
+	term_class_freq_df = pd.read_csv(term_class_freq_filename, sep='\t')
 
- 		
+	mi = calc_mutual_info_df(class_freq_df, term_class_freq_df).tolist()
+	classids = class_freq_df.classid.values.tolist()
+
+	relatedness = pd.DataFrame({'classid': classids[1], 'r': mi}).sort('r', ascending=0)
+
+	return relatedness
+
+if __name__ == '__main__':
+
+	# define command line usage
+	usage = "usage: %prog [options] class_freq_filename term_class_freq_filename relatedness_filename"
+	parser = optparse.OptionParser()
+	(options, args) = parser.parse_args()
+
+	assert len(args) == 3
+	
+	class_freq_filename = args[0]
+	term_class_freq_filename = args[1]
+	relatedness_filename = args[2]
+
+	relatedness = calc_relatedness(class_freq_filename, term_class_freq_filename)
+
+	relatedness.to_csv(relatedness_filename, index=False, sep='\t')
+			
