@@ -1,0 +1,3 @@
+termid	classid	n
+export	1	49
+export	0	27652
