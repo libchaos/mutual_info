@@ -14,6 +14,20 @@ def calc_mutual_info(n11, n01, n10, n00):
 		n00 (int): # of documents not in the class where the term does not appear 
 	'''
 
+	assert n11 >= 0 
+	assert n01 >= 0
+	assert n10 >= 0
+	assert n00 >= 0
+
+	if n11 == 0:
+		n11 = .5
+	if n01 == 0:
+		n01 = .5
+	if n10 == 0:
+		n10 = .5
+	if n00 == 0:
+		n00 = .5
+
 	n = float(n11 + n10 + n01 + n00)
 	n1x = n11 + n10
 	nx1 = n11 + n01
@@ -58,7 +72,7 @@ def get_mutual_info_inputs(class_freq, term_class_freq):
 		for j in range(n_classes):
 			n10[i,j] = np.sum(n11[i,:]) - n11[i,j]
 			n00[i,j] = np.sum(n01[i,:]) - n01[i,j] 	
-	
+
 	return n11, n01, n10, n00
 
 def get_term_class_index(class_freq_df, term_class_freq_df):
@@ -95,7 +109,11 @@ def get_freq_from_df(class_freq_df, term_class_freq_df, termid_index, classid_in
 		term_class_freq (ndarray): see get_mutual_info_inputs
 	'''
 	
-	class_freq = class_freq_df.n.values
+	class_freq = np.zeros(len(classid_index))
+	for i in range(len(class_freq_df)):
+		classid = class_freq_df['classid'][i]
+		n = class_freq_df['n'][i]
+		class_freq[classid_index[classid]] = n
 
 	term_class_freq = np.zeros((len(termid_index), len(classid_index)))
 	for i in range(len(term_class_freq_df)):
