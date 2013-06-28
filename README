@@ -1,13 +1,16 @@
 relatedness
 ===========
 
-Given a set of documents in different classes, assign scores to each term appearing in the documents and each class giving the degree of relatedness between the term and the class.
+Given a set of documents in different classes, assign scores to each term appearing 
+in the documents and each class giving the degree of relatedness between the term 
+and the class.
 
 To calculate the relatedness scores for the example dataset:
 
 python relatedness.py example_class_freq.txt example_term_class_freq.txt example_relatedness.txt
 
-The first input file, in this case example_class_freq.txt, is a tab-delimited file with a row for each class and the following columns:
+The first input file, in this case example_class_freq.txt, is a tab-delimited file 
+with a row for each class and the following columns:
 
 classid: id or distinct name of the class
 n: # of documents in the class associated with classid
@@ -20,7 +23,8 @@ classid	n
 2 10
 3	20
 
-The second input file, in this case example_term_class_freq.txt, is a tab-delimited text file with a row for each combination of a term and a class and the following columns:
+The second input file, in this case example_term_class_freq.txt, is a tab-delimited 
+text file with a row for each combination of a term and a class and the following columns:
 
 termid: id or distinct name of the term
 classid: id or distinct name of the class
@@ -34,9 +38,11 @@ termid	classid	n
 1 1	30
 2	1	100
 
-If a certain combination is not included, then it is assumed that there are no documents in the class where the term appears. 
+If a certain combination is not included, then it is assumed that there are 
+no documents in the class where the term appears. 
 
-The output file, in this case example_relatedness.txt, is a tab-delimited text with a row for each combination of a term and a class and the following columns:
+The output file, in this case example_relatedness.txt, is a tab-delimited 
+text with a row for each combination of a term and a class and the following columns:
 
 termid: id or distinct name of the term
 classid: id or distinct name of the class
