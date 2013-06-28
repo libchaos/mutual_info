@@ -5,7 +5,7 @@ Given a set of documents in different classes, assign scores to each term appear
 in the documents and each class giving the degree of relatedness between the term 
 and the class.
 
-To calculate the relatedness scores for the example dataset:
+To calculate the relatedness scores for the example datasets:
 
 python relatedness.py class_freq.txt term_class_freq.txt relatedness.txt
 
@@ -42,7 +42,7 @@ If a certain combination is not included, then it is assumed that there are
 no documents in the class where the term appears. 
 
 The output file, in this case relatedness.txt, is a tab-delimited 
-text with a row for each combination of a term and a class and the following columns:
+text file with a row for each combination of a term and a class and the following columns:
 
 termid: id or distinct name of the term
 classid: id or distinct name of the class
