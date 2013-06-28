@@ -20,7 +20,7 @@ For example:
 classid	n
 0	100
 1	50
-2 10
+2	10
 3	20
 
 The second input file, in this case example_term_class_freq.txt, is a tab-delimited 
