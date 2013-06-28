@@ -7,9 +7,9 @@ and the class.
 
 To calculate the relatedness scores for the example dataset:
 
-python relatedness.py example_class_freq.txt example_term_class_freq.txt example_relatedness.txt
+python relatedness.py class_freq.txt term_class_freq.txt relatedness.txt
 
-The first input file, in this case example_class_freq.txt, is a tab-delimited file 
+The first input file, in this case class_freq.txt, is a tab-delimited file 
 with a row for each class and the following columns:
 
 classid: id or distinct name of the class
@@ -23,7 +23,7 @@ classid	n
 2	10
 3	20
 
-The second input file, in this case example_term_class_freq.txt, is a tab-delimited 
+The second input file, in this case term_class_freq.txt, is a tab-delimited 
 text file with a row for each combination of a term and a class and the following columns:
 
 termid: id or distinct name of the term
@@ -41,7 +41,7 @@ termid	classid	n
 If a certain combination is not included, then it is assumed that there are 
 no documents in the class where the term appears. 
 
-The output file, in this case example_relatedness.txt, is a tab-delimited 
+The output file, in this case relatedness.txt, is a tab-delimited 
 text with a row for each combination of a term and a class and the following columns:
 
 termid: id or distinct name of the term
