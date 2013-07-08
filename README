@@ -1,7 +1,7 @@
 mutual_info
 ===========
 
-Given a set of documents in different classes, calculate the mutual information of each term appearing in the documents by comparing frequencies of the term in each class to frequencies in the rest of the classes.
+Given a set of documents in different classes, calculate the mutual information (http://nlp.stanford.edu/IR-book/html/htmledition/mutual-information-1.html) of each term appearing in the documents by comparing frequencies of the term in each class to frequencies in the rest of the classes.
 
 Dependencies
 ------------
