@@ -1,4 +1,4 @@
-relatedness
+mutual_info
 ===========
 
 Given a set of documents in different classes, calculate the mutual information of each term appearing 
