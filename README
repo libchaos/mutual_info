@@ -39,7 +39,7 @@ termid	classid	n
 If a certain combination is not included, then it is assumed that there are 
 no documents in the class where the term appears. 
 
-The output file, in this case relatedness.txt, is a tab-delimited 
+The output file, in this case mutual_info.txt, is a tab-delimited 
 text file with a row for each combination of a term and a class and the following columns:
 
 termid: id or distinct name of the term
