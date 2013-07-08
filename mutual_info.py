@@ -19,6 +19,7 @@ def calc_mutual_info(n11, n01, n10, n00):
 	assert n10 >= 0
 	assert n00 >= 0
 
+	# add a small amount of mass to zeroes so that MI is not undefined
 	if n11 == 0:
 		n11 = .5
 	if n01 == 0:
@@ -76,6 +77,9 @@ def get_mutual_info_inputs(class_freq, term_class_freq):
 	return n11, n01, n10, n00
 
 def get_term_class_index(class_freq_df, term_class_freq_df):
+	'''Create a dictionary mapping term and class ids to an index
+	to be used in creating arrays (see get_freq_from_df)
+	'''
 
 	termids = np.unique(term_class_freq_df.termid.values)
 	classids = np.unique(term_class_freq_df.classid.values)
@@ -141,7 +145,7 @@ def calc_mutual_info_df(class_freq_df, term_class_freq_df, termid_index, classid
 
 	return mi
 
-def calc_relatedness(class_freq_filename, term_class_freq_filename):
+def mutual_info(class_freq_filename, term_class_freq_filename):
 
 	class_freq_df = pd.read_csv(class_freq_filename, sep='\t')	
 	term_class_freq_df = pd.read_csv(term_class_freq_filename, sep='\t')
@@ -158,14 +162,14 @@ def calc_relatedness(class_freq_filename, term_class_freq_filename):
 			classids.append(classid)
 			mis.append(mi[termid_index[termid], classid_index[classid]])	
 	
-	relatedness = pd.DataFrame({'termid': termids, 'classid': classids, 'r': mis}).sort(['classid','r'], ascending=[1,0])
+	mi_df = pd.DataFrame({'termid': termids, 'classid': classids, 'r': mis}).sort(['classid','r'], ascending=[1,0])
 
-	return relatedness
+	return mi_df
 
 if __name__ == '__main__':
 
 	# define command line usage
-	usage = "usage: %prog [options] class_freq_filename term_class_freq_filename relatedness_filename"
+	usage = "usage: %prog [options] class_freq_filename term_class_freq_filename mutual_info_filename"
 	parser = optparse.OptionParser()
 	(options, args) = parser.parse_args()
 
@@ -173,9 +177,9 @@ if __name__ == '__main__':
 	
 	class_freq_filename = args[0]
 	term_class_freq_filename = args[1]
-	relatedness_filename = args[2]
+	mutual_info_filename = args[2]
 
-	relatedness = calc_relatedness(class_freq_filename, term_class_freq_filename)
+	mi_df = mutual_info(class_freq_filename, term_class_freq_filename)
 
-	relatedness.to_csv(relatedness_filename, index=False, sep='\t')
+	mi_df.to_csv(mutual_info_filename, index=False, sep='\t')
 			

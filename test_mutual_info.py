@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
 
-import relatedness as r
-r = reload(r)
+import mutual_info
 
 def approx_equal(a, b, tol=.001):
 	return np.abs(a - b) < tol
@@ -14,7 +13,7 @@ def test_calc_mutual_info():
 	n10 = 27652
 	n00 = 774106
 
-	mi = r.calc_mutual_info(n11, n01, n10, n00)
+	mi = mutual_info.calc_mutual_info(n11, n01, n10, n00)
 	soln_mi = .0001105
 
 	assert approx_equal(mi, soln_mi)
@@ -28,7 +27,7 @@ def test_get_mutual_info_inputs():
 	term_class_freq[0,0] = 27652
 	term_class_freq[0,1] = 49
 
-	n11, n01, n10, n00 = r.get_mutual_info_inputs(class_freq, term_class_freq)
+	n11, n01, n10, n00 = mutual_info.get_mutual_info_inputs(class_freq, term_class_freq)
 
 	assert (n11 == np.array([[27652, 49]])).all()
 	assert (n01 == np.array([[774106, 141]])).all()
@@ -42,8 +41,8 @@ def test_get_freq_from_df():
 	class_freq_df = pd.DataFrame({'classid': [0, 1], 'n': [801758, 190]})
 	term_class_freq_df = pd.DataFrame({'termid': ['export','export'], 'classid': [0, 1], 'n': [27652, 49]})
 
-	termid_index, classid_index = r.get_term_class_index(class_freq_df, term_class_freq_df)
-	class_freq, term_class_freq = r.get_freq_from_df(class_freq_df, term_class_freq_df, termid_index, classid_index)
+	termid_index, classid_index = mutual_info.get_term_class_index(class_freq_df, term_class_freq_df)
+	class_freq, term_class_freq = mutual_info.get_freq_from_df(class_freq_df, term_class_freq_df, termid_index, classid_index)
 
 	soln_class_freq = np.array([801758, 190])
 	soln_term_class_freq = np.zeros((1,2))
@@ -60,8 +59,8 @@ def test_calc_mutual_info_df():
 	class_freq_df = pd.DataFrame({'classid': [0, 1], 'n': [801758, 190]})
 	term_class_freq_df = pd.DataFrame({'termid': ['export','export'], 'classid': [0, 1], 'n': [27652, 49]})
 
-	termid_index, classid_index = r.get_term_class_index(class_freq_df, term_class_freq_df)
-	mi = r.calc_mutual_info_df(class_freq_df, term_class_freq_df, termid_index, classid_index)
+	termid_index, classid_index = mutual_info.get_term_class_index(class_freq_df, term_class_freq_df)
+	mi = mutual_info.calc_mutual_info_df(class_freq_df, term_class_freq_df, termid_index, classid_index)
 	soln_mi = np.array([[.0001105, .0001105]])
 
 	assert mi.shape == soln_mi.shape
