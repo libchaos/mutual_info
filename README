@@ -3,6 +3,16 @@ mutual_info
 
 Given a set of documents in different classes, calculate the mutual information of each term appearing in the documents by comparing frequencies of the term in each class to frequencies in the rest of the classes.
 
+Dependencies
+------------
+
+NumPy
+Pandas
+nose (for running the tests)
+
+Getting Started
+---------------
+
 To calculate mutual information for the example datasets:
 
 python mutual_info.py class_freq.txt term_class_freq.txt mutual_info.txt
