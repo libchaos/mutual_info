@@ -1,13 +1,12 @@
 relatedness
 ===========
 
-Given a set of documents in different classes, assign scores to each term appearing 
-in the documents and each class giving the degree of relatedness between the term 
-and the class.
+Given a set of documents in different classes, calculate the mutual information of each term appearing 
+in the documents by comparing frequencies of the term in each class to frequencies in the rest of the classes.
 
-To calculate the relatedness scores for the example datasets:
+To calculate mutual information for the example datasets:
 
-python relatedness.py class_freq.txt term_class_freq.txt relatedness.txt
+python mutual_info.py class_freq.txt term_class_freq.txt mutual_info.txt
 
 The first input file, in this case class_freq.txt, is a tab-delimited file 
 with a row for each class and the following columns:
@@ -46,11 +45,11 @@ text file with a row for each combination of a term and a class and the followin
 
 termid: id or distinct name of the term
 classid: id or distinct name of the class
-r: relatedness score, the higher the score the more related the term is to the class
+mi: mutual information of the term with the class as the reference class
 
 For example:
 
-termid	classid	r
+termid	classid	mi
 0	0	.8
 1	0	.1
 1	1	.7

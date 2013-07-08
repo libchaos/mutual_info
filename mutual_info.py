@@ -162,7 +162,7 @@ def mutual_info(class_freq_filename, term_class_freq_filename):
 			classids.append(classid)
 			mis.append(mi[termid_index[termid], classid_index[classid]])	
 	
-	mi_df = pd.DataFrame({'termid': termids, 'classid': classids, 'r': mis}).sort(['classid','r'], ascending=[1,0])
+	mi_df = pd.DataFrame({'termid': termids, 'classid': classids, 'mi': mis}).sort(['classid','mi'], ascending=[1,0])
 
 	return mi_df
 
