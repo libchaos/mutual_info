@@ -64,3 +64,22 @@ termid	classid	mi
 1	1	.7
 2	1	.9
 
+If you haven't calculated the frequencies of terms and classes in a set of documents, then use the prep.py utility:
+
+python prep.py doc.txt doc_class_freq.txt doc_term_class_freq.txt 
+
+The input file, in this case doc.txt, is a tab-delimited file with a row for each document and the following columns:
+
+documentid: id or distinct name of the document
+classid: id or distinct name of the class to which the document belongs
+text: the contents of the document stripped of tabs, new lines and carriage returns
+
+For example:
+
+1 a hello there
+2 b yo yo
+3 a hi hello
+4 a yo
+
+The files outputted by prep.py, in this case doc_class_freq.txt and doc_term_class_freq.txt, are the inputs to mutual_info.py.
+

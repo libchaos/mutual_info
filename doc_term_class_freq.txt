@@ -1,0 +1,6 @@
+termid	classid	n
+hi	a	1
+there	a	1
+hello	a	2
+yo	a	1
+yo	b	1
