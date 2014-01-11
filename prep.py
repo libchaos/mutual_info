@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	
 	# define command line usage
 	usage = "usage: %prog [options] doc_filename class_freq_filename term_class_freq_filename"
-	parser = optparse.OptionParser()
+	parser = optparse.OptionParser(usage)
 
 	parser.add_option("-t", "--term", dest="n_term_min", help="only store terms with at least N_TERM observations", metavar="N_TERM", default=0, type="int")
 	parser.add_option("-c", "--class", dest="n_class_min", help="only store classes with at least N_CLASS observations", metavar="N_CLASS", default=0, type="int")
