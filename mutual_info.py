@@ -170,7 +170,7 @@ if __name__ == '__main__':
 
 	# define command line usage
 	usage = "usage: %prog [options] class_freq_filename term_class_freq_filename mutual_info_filename"
-	parser = optparse.OptionParser()
+	parser = optparse.OptionParser(usage)
 	(options, args) = parser.parse_args()
 
 	assert len(args) == 3
