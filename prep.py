@@ -1,7 +1,7 @@
 import optparse
 import numpy as np
 
-def prep(doc_stream):
+def prep(doc_stream, n_term_min=0, n_class_min=0):
 
 	class_freq = {}
 	term_class_freq = {}
@@ -26,13 +26,15 @@ def prep(doc_stream):
 	# class freq
 	class_freq_text = 'classid\tn\n'
 	for class_id in class_freq.keys():
-		class_freq_text += class_id + '\t' + str(class_freq[class_id]) + '\n'
+		if class_freq[class_id] >= n_class_min:
+			class_freq_text += class_id + '\t' + str(class_freq[class_id]) + '\n'
 
 	# term class freq
 	term_class_freq_text = 'termid\tclassid\tn\n'
 	for class_id in term_class_freq.keys():
 		for term_id in term_class_freq[class_id].keys():
-			term_class_freq_text += term_id + '\t' + class_id + '\t' + str(term_class_freq[class_id][term_id]) + '\n'
+			if term_class_freq[class_id][term_id] >= n_term_min and class_freq[class_id] >= n_class_min:
+				term_class_freq_text += term_id + '\t' + class_id + '\t' + str(term_class_freq[class_id][term_id]) + '\n'
 
 	return class_freq_text, term_class_freq_text
 
@@ -41,6 +43,10 @@ if __name__ == '__main__':
 	# define command line usage
 	usage = "usage: %prog [options] doc_filename class_freq_filename term_class_freq_filename"
 	parser = optparse.OptionParser()
+
+	parser.add_option("-t", "--term", dest="n_term_min", help="only store terms with at least N_TERM observations", metavar="N_TERM", default=0, type="int")
+	parser.add_option("-c", "--class", dest="n_class_min", help="only store classes with at least N_CLASS observations", metavar="N_CLASS", default=0, type="int")
+
 	(options, args) = parser.parse_args()
 
 	doc_filename = args[0]
@@ -48,7 +54,7 @@ if __name__ == '__main__':
 	term_class_freq_filename = args[2]
 
 	f = open(doc_filename, 'r')
-	class_freq_text, term_class_freq_text = prep(f)	
+	class_freq_text, term_class_freq_text = prep(f, n_class_min=options.n_class_min, n_term_min=options.n_term_min)	
 	f.close()
 
 	f = open(class_freq_filename, 'w')
